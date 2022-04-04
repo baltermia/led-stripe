@@ -1,4 +1,3 @@
-
 #include <Arduino.h>
 #include <RotaryEncoder.h>
 
@@ -16,7 +15,6 @@ void setup()
   while (! Serial) ;
 }
 
-
 void loop()
 {
   static int pos = 0;
@@ -28,8 +26,6 @@ void loop()
     pos = newPos;
   }
 }
-
-
 
 void RotarySensor(int direction) 
 {
