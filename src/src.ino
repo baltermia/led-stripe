@@ -21,7 +21,8 @@ void loop()
   rotary.tick();
 
   int newPos = rotary.getPosition();
-  if (pos != newPos) {
+  if (pos != newPos) 
+  {
     RotarySensor((int)rotary.getDirection());
     pos = newPos;
   }
