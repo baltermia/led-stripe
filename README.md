@@ -3,3 +3,4 @@
 
 ## Used libraries
 - [RotarySensor](https://www.mathertel.de/Arduino/RotaryEncoderLibrary.aspx)
+- [DHT](https://github.com/adafruit/DHT-sensor-library)
