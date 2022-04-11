@@ -72,6 +72,11 @@ void TemperatureSensor()
   {
     return;
   }
+  
+  if (tmp == temperature) 
+  {
+    return;
+  }
 
   temperature = tmp;
 
@@ -79,6 +84,4 @@ void TemperatureSensor()
   Serial.print(F("°C"));
 
   Serial.println();
-
-  delay(500);
 }
