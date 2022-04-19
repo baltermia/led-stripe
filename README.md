@@ -8,7 +8,6 @@
 4. Finally install the following libraries:
     - [RotarySensor](https://www.mathertel.de/Arduino/RotaryEncoderLibrary.aspx)
     - [DHT snesor library](https://github.com/adafruit/DHT-sensor-library)
+    - [WiFiNINA](https://www.arduino.cc/reference/en/libraries/wifinina/)
 
 You can use this command: `arduino-cli lib install "<name>"`
-      
-Also install the `ESP8266` add-on, chech the tutorial [here](https://github.com/esp8266/Arduino#installing-with-boards-manager).
