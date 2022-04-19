@@ -11,4 +11,4 @@
 
 You can use this command: `arduino-cli lib install "<name>"`
       
-Also install the `ESP8266` add-on, chech the tutorial [here](http://arduino.esp8266.com/stable/package_esp8266com_index.json).
+Also install the `ESP8266` add-on, chech the tutorial [here](https://github.com/esp8266/Arduino#installing-with-boards-manager).
