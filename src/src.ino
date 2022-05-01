@@ -25,8 +25,8 @@ bool checkTemperature = true;
 // -----------------------------------------
 
 // -- WebServer ----------------------------
-const char ssid[] = "username";
-const char pass[] = "password";
+const char ssid[] = "";
+const char pass[] = "";
 
 int keyIndex = 0;
 
@@ -39,7 +39,6 @@ void setup()
   
   while (! Serial) ;
 
-  EnableWiFi();
   ConnectWiFi();
 
   server.begin();
@@ -63,6 +62,7 @@ void loop()
 void RotarySensor() 
 {
   static int pos = 0;
+
   rotary.tick();
 
   int newPos = rotary.getPosition();
@@ -90,17 +90,10 @@ void TemperatureSensor()
 {
   float tmp = dht.readTemperature();
 
-  if (isnan(tmp))
+  if (!isnan(tmp) && tmp != temperature)
   {
-    return;
+    temperature = tmp;
   }
-  
-  if (tmp == temperature) 
-  {
-    return;
-  }
-
-  temperature = tmp;
 }
 
 void WebServer() 
@@ -121,20 +114,7 @@ void WebServer()
       // Serial.write(c); 
       if (c == '\n') {
         if (currentLine.length() == 0) {
-          client.println("HTTP/1.1 200 OK");
-          client.println("Content-type:text/html");
-          client.println();
-
-          client.print("Click <a href=\"/ON\">here</a> to turn leds on<br>");
-          client.print("Click <a href=\"/OFF\">here</a> to turn leds off<br>");
-
-          client.println("Curren brightness: ");
-          client.print(brightness);
-
-          client.println("Curren temperature: ");
-          client.print(temperature);
-
-          client.println();
+          PrintHtmlToClient(client);
           break;
         }
         else {
@@ -143,13 +123,16 @@ void WebServer()
       }
       else if (c != '\r') {
         currentLine += c;
-        }
+      }
 
       if (currentLine.endsWith("GET /ON")) {
         Serial.println("WebServer: ON");
       }
       if (currentLine.endsWith("GET /OFF")) {
         Serial.println("WebServer: OFF");
+      }
+      if (currentLine.endsWith("GET /BRIGHTNESS/50")) {
+        Serial.println("WebServer: BRIGHTNESS");
       }
     }
   }  
@@ -160,36 +143,53 @@ void WebServer()
 // -- WiFi ---------------------------------
 void PrintWifiStatus() 
 {
-  Serial.print("SSID: ");
-  Serial.println(WiFi.SSID());
+  Serial.println("SSID: " + String(WiFi.SSID()));
 
-  Serial.print("IP Address: ");
-  Serial.println(WiFi.localIP());
-}
-
-void EnableWiFi() 
-{
-  // check for the WiFi module:
-  if (WiFi.status() == WL_NO_MODULE) {
-    Serial.println("Communication with WiFi module failed!");
-    // don't continue
-    while (true);
-  }
+  Serial.println("IP Address: " + WiFi.localIP());
 }
 
 void ConnectWiFi() 
 {
   int status = WL_IDLE_STATUS;
 
-  // attempt to connect to Wifi network:
+  Serial.print("Attempting to connect to " + String(ssid));
   while (status != WL_CONNECTED) {
-    Serial.print("Attempting to connect to SSID: ");
-    Serial.println(ssid);
-    // Connect to WPA/WPA2 network. Change this line if using open or WEP network:
     status = WiFi.begin(ssid, pass);
-
-    // wait 1 seconds for connection:
-    delay(1000);
+    Serial.print(".");
+    delay(500);
   }
+  Serial.println();
+}
+
+void PrintHtmlToClient(WiFiClient client)
+{
+  client.println(
+    "HTTP/1.1 200 OK\r\n"
+    "Content-type:text/html\r\n"
+    "\r\n"
+    "<!DOCTYPE html>\n"
+    "<title>LED-Strip Controller Page</title>\n"
+    "</head>\n"
+    "<body>\n"
+      "<h1>Welcome to the LED-Strip Controller!</h1>\n"
+      "Click <a href=\"/OFF\">here</a> to turn leds off<br>\n"
+      "Click <a href=\"/OFF\">here</a> to turn leds off<br>\n"
+      "<form onSubmit=\"return sendValue(\"BRIGHTNESS\", \"brightness\")\">"
+        "<label for=\"brightness\">Brightness (between 0 and 100):</label>"
+        "<input type=\"number\" id=\"brightness\" name=\"brightness\" min=\"0\" max=\"100\">"
+      "</form>"
+  );
+
+  client.println("Current brightness: " + String(brightness));
+  client.println("\nCurrent Temperature: " + String(temperature));
+
+  client.println(
+      "<script type=\"text/javascript\">"
+        "function sendValue(url, id) {"
+          "$.get(url + \"/\" + document.getElementById(id).value + \"/\""
+        "}"
+      "</script>"
+    "</body>"
+  );
 }
 // -----------------------------------------
