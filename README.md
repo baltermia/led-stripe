@@ -9,5 +9,6 @@
     - [RotarySensor](https://www.mathertel.de/Arduino/RotaryEncoderLibrary.aspx)
     - [DHT snesor library](https://github.com/adafruit/DHT-sensor-library)
     - [WiFiNINA](https://www.arduino.cc/reference/en/libraries/wifinina/)
+    - [Regexp](https://github.com/nickgammon/Regexp)
 
 You can use this command: `arduino-cli lib install "<name>"`
