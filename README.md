@@ -12,3 +12,6 @@
     - [FastLED](https://github.com/FastLED/FastLED)
 
 You can use this command: `arduino-cli lib install "<name>"`
+
+## Reflexion
+Das Projekt ist gut verlaufen, die Aufteilung der Aufgaben hätte ein bisschen besser sein können, aber wir konnten uns einigen. Es hat Spass gemacht, einen Arduino zu programmieren. Die leuchtenden LEDs geben ein Erfolgserlebnis und sind sehr befriedigend.
